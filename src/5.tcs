@@ -15,7 +15,14 @@ out vec4 pos_es_in[];
 void main()
 {   
   /////////////////////////////////////////////////////////////////////////////
-  // Replace with your code:
+  // Reference: https://stackoverflow.com/questions/24083656/tessellation-shader-opengl
+  
+  if (gl_InvocationID == 0) {
+        gl_TessLevelInner[0] = 5.0;
+        gl_TessLevelOuter[0] = 5.0;
+        gl_TessLevelOuter[1] = 5.0;
+        gl_TessLevelOuter[2] = 5.0;
+  }
   pos_es_in[gl_InvocationID] = pos_cs_in[gl_InvocationID];
   /////////////////////////////////////////////////////////////////////////////
 }

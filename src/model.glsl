@@ -12,7 +12,7 @@ mat4 model(bool is_moon, float time)
   /////////////////////////////////////////////////////////////////////////////
   if (is_moon) {
     float theta = time / 2.0 * M_PI;
-    return rotate_about_y(theta) * translate(vec3(2.0, 0.0, 0.0))* uniform_scale(0.3);
+    return rotate_about_y(theta) * translate(vec3(2.0, 0.0, 0.0)) * uniform_scale(0.3);
   }
   return identity();
   /////////////////////////////////////////////////////////////////////////////

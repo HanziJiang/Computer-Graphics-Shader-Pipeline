@@ -18,7 +18,51 @@ out vec3 color;
 void main()
 {
   /////////////////////////////////////////////////////////////////////////////
-  // Replace with your code 
-  color = vec3(1,1,1);
+  vec3 ka, kd, ks, n, v, l;
+  float p, light_theta;
+  mat4 light_orbit_matrix;
+  vec4 d;
+
+  light_theta = - animation_seconds / 4.0 * M_PI;
+  light_orbit_matrix = mat4(
+    cos(light_theta), 0.0, -sin(light_theta), 0.0,
+    0.0,              1.0, 0.0,               0.0,
+    sin(light_theta), 0.0, cos(light_theta),  0.0,
+    0.0,              0.0, 0.0,               1.0);
+  d = normalize(vec4(1.0, 1.0, 1.0, 1.0));
+  d = light_orbit_matrix * d;
+
+  float noise;
+  if (is_moon) {
+    ka = vec3(0.0157, 0.2392, 0.3882);
+    kd = vec3(0.3176, 0.6118, 0.5647);
+    ks = vec3(0.2588, 0.5333, 0.5333);
+    p = 100;
+
+    noise = perlin_noise(vec3(2.12, 3.534, 3.89) * sphere_fs_in);
+    kd = mix(kd, vec3(0.2196, 0.0196, 0.1922), noise);
+
+    noise = perlin_noise(vec3(2.75, 3.33, 1.8) * sphere_fs_in);
+    kd = mix(kd, vec3(0.098, 0.8275, 0.2549), noise);
+
+  } else {
+    ka = vec3(0.4863, 0.2275, 0.0118);
+    kd = vec3(0.9255, 0.7373, 0.4863);
+    ks = vec3(0.3765, 0.4314, 0.3098);
+    p = 700;
+    
+    noise = perlin_noise(vec3(5.542, 3.88, 3.326) * sphere_fs_in);
+    kd = mix(kd, vec3(0.6, 0.6275, 0.8667), noise);
+
+    noise = perlin_noise(vec3(2.53, 3.853, 1.7853) * sphere_fs_in);
+    kd = mix(kd, vec3(0.7765, 0.8745, 0.3882), noise);
+  }
+
+  n = normalize(normal_fs_in.xyz);
+  v = normalize(pos_fs_in.xyz);
+  l = normalize(d.xyz);
+
+  color = (0.2 * (view_pos_fs_in.z+3))*vec3(1,1,1);
+  //color = blinn_phong(ka, kd, ks, p, n, v, l);
   /////////////////////////////////////////////////////////////////////////////
 }

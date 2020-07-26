@@ -25,6 +25,6 @@ void main()
 {
   /////////////////////////////////////////////////////////////////////////////
   mat4 modeling_transformation = model(is_moon, animation_seconds);
-  pos_cs_in = proj * view * modeling_transformation * vec4(pos_vs_in, 1.0);
+  pos_cs_in = proj * view * modeling_transformation * vec4(normalize(pos_vs_in), 1.0);
   /////////////////////////////////////////////////////////////////////////////
 }
