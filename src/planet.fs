@@ -27,14 +27,14 @@ void main()
   vec4 d;
 
   // Generate light
-  light_theta = - animation_seconds / 1.0 * M_PI;
+  light_theta = - animation_seconds / 4.0 * M_PI;
   light_orbit_matrix = mat4(
     cos(light_theta), 0.0, -sin(light_theta), 0.0,
     0.0,              1.0, 0.0,               0.0,
     sin(light_theta), 0.0, cos(light_theta),  0.0,
     0.0,              0.0, 0.0,               1.0);
-  d = normalize(vec4(1.0, 1.0, 1.0, 1.0));
-  d = light_orbit_matrix * d;
+  d = normalize(vec4(1.0, 1.0, 1.0, 0.0));
+  d = view * light_orbit_matrix * d;
 
   float noise;
   if (is_moon) {
@@ -78,7 +78,7 @@ void main()
   }
 
   n = normalize(normal_fs_in.xyz);
-  v = normalize(pos_fs_in.xyz);
+  v = normalize(-view_pos_fs_in.xyz);
   l = normalize(d.xyz);
 
   // Create bumpy surface

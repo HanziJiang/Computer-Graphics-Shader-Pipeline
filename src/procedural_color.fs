@@ -23,14 +23,14 @@ void main()
   mat4 light_orbit_matrix;
   vec4 d;
 
-  light_theta = - animation_seconds / 4.0 * M_PI;
+  light_theta = -animation_seconds / 4.0 * M_PI;
   light_orbit_matrix = mat4(
     cos(light_theta), 0.0, -sin(light_theta), 0.0,
     0.0,              1.0, 0.0,               0.0,
     sin(light_theta), 0.0, cos(light_theta),  0.0,
     0.0,              0.0, 0.0,               1.0);
-  d = normalize(vec4(1.0, 1.0, 1.0, 1.0));
-  d = light_orbit_matrix * d;
+  d = normalize(vec4(1.0, 1.0, 1.0, 0.0));
+  d = view * light_orbit_matrix * d;
 
   float noise;
   if (is_moon) {
@@ -59,10 +59,9 @@ void main()
   }
 
   n = normalize(normal_fs_in.xyz);
-  v = normalize(pos_fs_in.xyz);
+  v = normalize(-view_pos_fs_in.xyz);
   l = normalize(d.xyz);
 
-  color = (0.2 * (view_pos_fs_in.z+3))*vec3(1,1,1);
-  //color = blinn_phong(ka, kd, ks, p, n, v, l);
+  color = blinn_phong(ka, kd, ks, p, n, v, l);
   /////////////////////////////////////////////////////////////////////////////
 }

@@ -47,7 +47,7 @@ float improved_perlin_noise( vec3 st)
   float e = mix(a, b, smooth_st_diff.y);
   float f = mix(c, d, smooth_st_diff.y);
   
-  return mix(e, f, smooth_st_diff.z) / (sqrt(3)/2);
+  return mix(e, f, smooth_st_diff.z) / (sqrt(3)/4);
   /////////////////////////////////////////////////////////////////////////////
 }
 

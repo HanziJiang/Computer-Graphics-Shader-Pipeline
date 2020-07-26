@@ -9,7 +9,9 @@
 float improved_smooth_step( float f)
 {
   /////////////////////////////////////////////////////////////////////////////
-  return 6 * pow(f, 5) + (-15) * pow(f, 4) + 10 * pow(f, 3);
+  if (f <= 0) return 0.0;
+  else if (f >= 1) return 1.0;
+  else return 6 * pow(f, 5) + (-15) * pow(f, 4) + 10 * pow(f, 3);
   /////////////////////////////////////////////////////////////////////////////
 }
 vec3 improved_smooth_step( vec3 f)
