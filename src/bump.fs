@@ -65,7 +65,7 @@ void main()
   n = cross((bump_position(is_moon, sphere_fs_in + epsilon * T) - position) / epsilon, (bump_position(is_moon, sphere_fs_in + epsilon * B) - position) / epsilon);
 
   mat4 modeling_transformation = model(is_moon, animation_seconds);
-  n = normalize((transpose(inverse(view * modeling_transformation)) * vec4(n, 1.0)).xyz);
+  n = normalize((view * modeling_transformation * vec4(n, 1.0) - view * modeling_transformation * vec4(0.0, 0.0, 0.0, 1.0)).xyz);
 
   color = blinn_phong(ka, kd, ks, p, n, v, l);
   /////////////////////////////////////////////////////////////////////////////
