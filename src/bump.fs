@@ -26,6 +26,7 @@ void main()
   mat4 light_orbit_matrix;
   vec4 d;
 
+  // Generate directional light
   light_theta = - animation_seconds / 4.0 * M_PI;
   light_orbit_matrix = mat4(
     cos(light_theta), 0.0, -sin(light_theta), 0.0,
@@ -54,15 +55,16 @@ void main()
     kd = mix(kd, vec3(1.0, 1.0, 1.0), noise);
   }
 
-  n = normalize(normal_fs_in.xyz);
   v = normalize(-view_pos_fs_in.xyz);
   l = normalize(d.xyz);
 
+  // Get bumpy texture
   float epsilon = 0.001;
   vec3 T, B;
   tangent(sphere_fs_in, T, B);
   vec3 position = bump_position(is_moon , sphere_fs_in);
   n = cross((bump_position(is_moon, sphere_fs_in + epsilon * T) - position) / epsilon, (bump_position(is_moon, sphere_fs_in + epsilon * B) - position) / epsilon);
+  if (dot(sphere_fs_in, n) < 0) n = -n;
 
   mat4 modeling_transformation = model(is_moon, animation_seconds);
   n = normalize((view * modeling_transformation * vec4(n, 1.0) - view * modeling_transformation * vec4(0.0, 0.0, 0.0, 1.0)).xyz);

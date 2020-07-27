@@ -77,7 +77,6 @@ void main()
     }
   }
 
-  n = normalize(normal_fs_in.xyz);
   v = normalize(-view_pos_fs_in.xyz);
   l = normalize(d.xyz);
 
@@ -88,10 +87,10 @@ void main()
 
   vec3 position = bump_position(is_moon , sphere_fs_in);
   n = cross((bump_position(is_moon, sphere_fs_in + epsilon * T) - position) / epsilon, (bump_position(is_moon, sphere_fs_in + epsilon * B) - position) / epsilon);
+  if (dot(sphere_fs_in, n) < 0) n = -n;
   
   mat4 modeling_transformation = model(is_moon, animation_seconds);
-
-  n = normalize((transpose(inverse(view * modeling_transformation)) * vec4(n, 1.0)).xyz);
+  n = normalize((view * modeling_transformation * vec4(n, 1.0) - view * modeling_transformation * vec4(0.0, 0.0, 0.0, 1.0)).xyz);
 
   color = blinn_phong(ka, kd, ks, p, n, v, l);
   /////////////////////////////////////////////////////////////////////////////
